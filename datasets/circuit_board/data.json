@@ -1,0 +1,113 @@
+{
+  "combined_tileset": false,
+  "tiles": [
+    {
+      "sprite": 0,
+      "sockets": [
+        "chip",
+        "chip",
+        "chip",
+        "chip"
+      ],
+      "rotations": [
+        0
+      ]
+    },
+    {
+      "sprite": 1,
+      "sockets": [
+        "none",
+        "none",
+        "none",
+        "none"
+      ],
+      "rotations": [
+        0
+      ]
+    },
+    {
+      "sprite": 2,
+      "sockets": [
+        "none",
+        "wire",
+        "none",
+        "none"
+      ],
+      "rotations": [
+        0, 1, 2, 3
+      ]
+    },
+    {
+      "sprite": 3,
+      "sockets": [
+        "none",
+        "metal",
+        "none",
+        "metal"
+      ],
+      "rotations": [
+        0, 2
+      ]
+    },
+    {
+      "sprite": 4,
+      "sockets": [
+        "half chip",
+        "wire",
+        "half chip",
+        "chip"
+      ],
+      "rotations": [
+        0, 1, 2, 3
+      ]
+    },
+    {
+      "sprite": 5,
+      "sockets": [
+        "half chip",
+        "none",
+        "none",
+        "half chip"
+      ],
+      "rotations": [
+        0, 1, 2, 3
+      ]
+    },
+    {
+      "sprite": 6,
+      "sockets": [
+        "none",
+        "wire",
+        "none",
+        "wire"
+      ],
+      "rotations": [
+        0, 1
+      ]
+    },
+    {
+      "sprite": 7,
+      "sockets": [
+        "metal",
+        "wire",
+        "metal",
+        "wire"
+      ],
+      "rotations": [
+        0, 1
+      ]
+    },
+    {
+      "sprite": 8,
+      "sockets": [
+        "metal",
+        "none",
+        "wire",
+        "none"
+      ],
+      "rotations": [
+        0, 1, 2, 3
+      ]
+    }
+  ]
+}
