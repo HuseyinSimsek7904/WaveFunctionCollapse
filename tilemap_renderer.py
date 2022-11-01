@@ -3,11 +3,8 @@ import wave_collapse
 import json
 
 
-def create_superposition_image(width, height):
+def load_sprites(json_data):
     import os
-
-    with open("data.json") as file:
-        json_data = json.load(file)
 
     tileset = {}
 
@@ -33,6 +30,10 @@ def create_superposition_image(width, height):
             else:
                 raise ValueError
 
+    return tileset, tile_size
+
+
+def create_rotations(json_data, tileset):
     sockets = []
     sprites = []
 
@@ -48,8 +49,17 @@ def create_superposition_image(width, height):
             sprites.append(new_sprite)
             sockets.append(new_socket)
 
-    wfc = wave_collapse.WaveFunctionCollapse(sockets, width, height)
+    return sockets, sprites
 
+
+def create_superposition_image(width, height):
+    with open("data.json") as file:
+        json_data = json.load(file)
+
+    base_sprites, tile_size = load_sprites(json_data)
+    sockets, sprites = create_rotations(json_data, base_sprites)
+
+    wfc = wave_collapse.WaveFunctionCollapse(sockets, width, height)
     wfc.find_superposition()
 
     values = tuple(wfc.superposition_values)
@@ -59,50 +69,11 @@ def create_superposition_image(width, height):
 
 
 def create_superposition_gif(width, height):
-    import os
-
     with open("data.json") as file:
         json_data = json.load(file)
 
-    tileset = {}
-
-    if json_data["combined_tileset"]:
-        # tileset.png should be (n*l)xl. n is the count of tiles and l is the size of a tile.
-        tileset_ = Image.open("tileset.png")
-
-        tile_count = tileset_.width // tileset_.height
-        tile_size = tileset_.height
-
-        for i in range(tile_count):
-            tileset[i] = tileset_.crop((i * tile_size, 0, (i + 1) * tile_size, tile_size))
-
-    else:
-        tile_size = None
-        for path in os.listdir("tileset"):
-            image = Image.open("tileset/" + path)
-            tileset[int(path[:-4])] = image
-
-            if (tile_size is None or tile_size == image.width) and image.width == image.height:
-                tile_size = image.width
-
-            else:
-                raise ValueError
-
-    sockets = []
-    sprites = []
-
-    for tile_no, tile in enumerate(json_data["tiles"]):
-        sprite = tileset[tile["sprite"]]
-        socket = tile["sockets"]
-        rotations = tile["rotations"]
-
-        for rotation in rotations:
-            new_sprite = sprite.rotate(90 * rotation)
-            new_socket = socket[rotation:] + socket[:rotation]
-
-            sprites.append(new_sprite)
-            sockets.append(new_socket)
-
+    base_sprites, tile_size = load_sprites(json_data)
+    sockets, sprites = create_rotations(json_data, base_sprites)
     wfc = wave_collapse.WaveFunctionCollapse(sockets, width, height)
 
     while True:
@@ -150,10 +121,13 @@ def create_image(values, sprites, width, height, tile_size):
 
 def main():
     import sys
+    import os
 
-    _, type_, width, height = sys.argv
+    _, path, type_, width, height = sys.argv
     width = int(width)
     height = int(height)
+
+    os.chdir(path)
 
     if type_ == "png":
         create_superposition_image(width, height)
