@@ -1,6 +1,9 @@
+import os
+
 from PIL import Image
 import wave_collapse
 import json
+import random
 
 
 def load_sprites(json_data):
@@ -9,7 +12,7 @@ def load_sprites(json_data):
     tileset = {}
 
     if json_data["combined_tileset"]:
-        # tileset.png should be (n*l)xl. n is the count of tiles and l is the size of a tile.
+        # tileset.png should be (n×l)×l. n is the count of tiles and l is the size of a tile.
         tileset_ = Image.open("tileset.png")
 
         tile_count = tileset_.width // tileset_.height
@@ -53,6 +56,10 @@ def create_rotations(json_data, tileset):
 
 
 def create_superposition_image(width, height):
+    if not os.path.isfile("data.json"):
+        print("Could not find data.json.")
+        return
+
     with open("data.json") as file:
         json_data = json.load(file)
 
@@ -65,13 +72,16 @@ def create_superposition_image(width, height):
 
     print(f"Created {len(sockets)} tiles.")
 
-    wfc = wave_collapse.WaveFunctionCollapse(sockets, connections, width, height)
-
     try:
+        wfc = wave_collapse.WaveFunctionCollapse(sockets, connections, width, height)
         wfc.find_superposition()
 
     except KeyboardInterrupt:
         print("Interrupted")
+        return
+
+    except ValueError as e:
+        print(f"Invalid data, '{e}'.")
         return
 
     values = tuple(wfc.superposition_values)

@@ -1,7 +1,7 @@
 # WaveFunctionCollapse
 This is my try on creating the wave function collapse algorithm.
 
-wave_collapse.py contains the class for creating tilemaps, you can use it for creating maps. This class does not have a rotation calculator but that can be created easily.
+_wave_collapse.py_ contains the class for creating tilemaps, you can use it for creating maps. This class does not have a rotation calculator but that can be created easily.
 
 To create a tilemap; you will need a tileset, which contains the socket types of the tiles. This dataset should be in the form:
 
@@ -12,9 +12,9 @@ Every tile should be in the form:
     [socket1, socket2, socket3, socket4]
      Up       Right    Down     Left
    
-To start, create a WaveFunctionCollapse object from wave_collapse.py. It takes three argument; tileset, width and height. Then you can just call find_superposition. That will decrease the entropy till there is only one tileset. Then you can use superposition_values to get the values. That returns a generator, might want to convert it to tuple. That tuple will have width x height items; as the tile goes right, index increases by one and as it goes down, index increases by width.
+To start, create a WaveFunctionCollapse object from _wave_collapse.py_. It takes three arguments; tileset, width and height. Then you can just call find_superposition. That will decrease the entropy till there is only one tileset. Then you can use _superposition_values_ to get the values. That returns a generator, might want to convert it to tuple. That tuple will have width x height items; as the tile goes right, index increases by one and as it goes down, index increases by width.
 
-Tiles will have their sockets matched equally when the algorithm is run.
+Tiles will have their sockets matched according to _data.json_.
 
 Example code:
 
@@ -44,8 +44,8 @@ Example code:
         print(f"({x}, {y})")
   
 
-tilemap_renderer.py contains the file that creates visuals using wave function collapse. It uses the class from wave_collapse.py.
-You can use the command prompt or power shell to run the program.
+_tilemap_renderer.py_ contains the file that creates visuals using wave function collapse. It uses the class from wave_collapse.py.
+You can use the command prompt or powershell to run the program.
 
 - To create a .png file:
 
@@ -62,7 +62,7 @@ For example,
 will create a 32x32 .png image in ".\datasets\triangles\".
 
 # Problems:
-  - Since program runs with recursion, it can actually reach the recursion limit in Python. To solve this problem, an option to use loops can be added.
-  - Algoritm makes the sockets MATCH EXACTLY EQUALY. That makes it impossible to create some interesting patterns. To add more pattern types, there could be a socket mapping that stores which socket types goes with which type.
+  - Since program runs using recursion, it can actually reach the recursion limit in Python. To solve this problem, an option to use loops can be added.
+  - <s> Algorithm makes the sockets MATCH EXACTLY EQUALLY. That makes it impossible to create some interesting patterns. To add more pattern types, there could be a socket mapping that stores which socket types goes with which type. </s>
   - Algorithm does not contain backtracking. Right now if algorithm creates an impossible pattern, it just restarts from nothing. Instead there could be a backtracking list that helps the algorithm to rewind a little back and keep going.
   - Code has no comments :P

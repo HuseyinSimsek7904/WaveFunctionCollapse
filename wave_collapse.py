@@ -5,9 +5,25 @@ sys.setrecursionlimit(100000)
 
 
 class WaveFunctionCollapse:
-    def __init__(self, data_set, connections, width, height):
+    def __init__(self, data_set, connections:dict, width, height):
         self.tile_data = data_set
         self.connections = connections
+
+        sockets = list(self.connections.keys())
+
+        # Check if the connections are valid
+        for tile in self.tile_data:
+            for socket in tile:
+                if socket not in sockets:
+                    raise ValueError(f"Connections for {socket} are not defined.")
+
+        for socket, allowed in self.connections.items():
+            for other in allowed:
+                if other not in sockets:
+                    raise ValueError(f"Unknown socket type, {socket}.")
+
+                if socket not in self.connections[other]:
+                    raise ValueError(f"Weird rule in connections.")
 
         self.tiles = []
 

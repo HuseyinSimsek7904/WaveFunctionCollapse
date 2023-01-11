@@ -5,10 +5,10 @@
     {
       "sprite": 0,
       "sockets": [
-        0,
-        0,
-        0,
-        0
+        "black",
+        "black",
+        "black",
+        "black"
       ],
       "rotations": [
         0
@@ -17,10 +17,10 @@
     {
       "sprite": 1,
       "sockets": [
-        0,
-        0,
-        1,
-        1
+        "black",
+        "black",
+        "green",
+        "green"
       ],
       "rotations": [
         0,
@@ -32,18 +32,18 @@
     {
       "sprite": 2,
       "sockets": [
-        1,
-        1,
-        1,
-        1
+        "green",
+        "green",
+        "green",
+        "green"
       ],
       "rotations": [
         0
       ]
     }
   ],
-  "connections": [
-    [0, 0],
-    [1, 1]
-  ]
+  "connections": {
+    "black": ["black"],
+    "green": ["green"]
+  }
 }
