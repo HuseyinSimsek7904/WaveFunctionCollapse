@@ -5,8 +5,10 @@ sys.setrecursionlimit(100000)
 
 
 class WaveFunctionCollapse:
-    def __init__(self, data_set, width, height):
+    def __init__(self, data_set, connections, width, height):
         self.tile_data = data_set
+        self.connections = connections
+
         self.tiles = []
 
         self.neighbors = ()
@@ -33,10 +35,7 @@ class WaveFunctionCollapse:
             self.create_null_tile()
 
     def create_null_tile(self):
-        self.tiles.append([False for i in range(self.tile_size)])
-
-        # False means that tile is still available
-        # True means that tile is impossible
+        self.tiles.append([False for _ in range(self.tile_size)])
 
     @property
     def lowest_entropy(self):
@@ -74,6 +73,7 @@ class WaveFunctionCollapse:
 
     def check_neighbors(self, no):
         sockets = set(), set(), set(), set()
+
         for tile_type, tile_possible in enumerate(self.tiles[no]):
             if tile_possible:
                 continue
@@ -81,35 +81,41 @@ class WaveFunctionCollapse:
             for direction, socket in enumerate(self.tile_data[tile_type]):
                 sockets[direction].add(socket)
 
-        if no // self.width > 0:
-            self.check_neighbor(no, -self.width, sockets, 0)
+        x = no % self.width
+        y = no // self.height
 
-        if no % self.width < self.width - 1:
-            self.check_neighbor(no, 1, sockets, 1)
+        if x > 0:
+            self.check_neighbor(no - 1, sockets, 3)
 
-        if no // self.width < self.height - 1:
-            self.check_neighbor(no, self.width, sockets, 2)
+        if y > 0:
+            self.check_neighbor(no - self.width, sockets, 0)
 
-        if no % self.width > 0:
-            self.check_neighbor(no, -1, sockets, 3)
+        if x < self.width - 1:
+            self.check_neighbor(no + 1, sockets, 1)
 
-    def check_neighbor(self, no, delta, sockets, side_no):
-        neighbor_no = no + delta
-        available_sockets = sockets[side_no]
+        if y < self.height - 1:
+            self.check_neighbor(no + self.width, sockets, 2)
 
-        neighbor = self.tiles[neighbor_no]
+    def get_available_sockets(self, sockets):
+        for socket in sockets:
+            yield from self.connections[socket]
+
+    def check_neighbor(self, tile_no, sockets, side_no):
+        available_sockets = tuple(self.get_available_sockets(sockets[side_no]))
+
+        tile = self.tiles[tile_no]
         difference = False
 
-        for neighbor_type, neighbor_type_available in enumerate(neighbor):
+        for neighbor_type, neighbor_type_available in enumerate(tile):
             if neighbor_type_available:
                 continue
 
             if self.tile_data[neighbor_type][(side_no + 2) % 4] not in available_sockets:
-                neighbor[neighbor_type] = True
+                tile[neighbor_type] = True
                 difference = True
 
         if difference:
-            self.check_neighbors(neighbor_no)
+            self.check_neighbors(tile_no)
 
     def find_superposition(self):
         while True:
@@ -118,9 +124,6 @@ class WaveFunctionCollapse:
 
             except ValueError:
                 return
-
-            except (NotImplementedError, RecursionError):
-                self.reset_tiles()
 
     @property
     def superposition_values(self):

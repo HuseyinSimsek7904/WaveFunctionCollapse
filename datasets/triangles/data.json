@@ -1,4 +1,5 @@
 {
+  "dimensions": 2,
   "combined_tileset": false,
   "tiles": [
     {
@@ -40,5 +41,9 @@
         0
       ]
     }
+  ],
+  "connections": [
+    [0, 0],
+    [1, 1]
   ]
 }
