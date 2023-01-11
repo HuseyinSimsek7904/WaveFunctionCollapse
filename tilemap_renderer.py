@@ -56,25 +56,46 @@ def create_superposition_image(width, height):
     with open("data.json") as file:
         json_data = json.load(file)
 
+    connections = json_data["connections"]
     base_sprites, tile_size = load_sprites(json_data)
+
+    print(f"Loaded {len(base_sprites)} sprites.")
+
     sockets, sprites = create_rotations(json_data, base_sprites)
 
-    wfc = wave_collapse.WaveFunctionCollapse(sockets, width, height)
-    wfc.find_superposition()
+    print(f"Created {len(sockets)} tiles.")
+
+    wfc = wave_collapse.WaveFunctionCollapse(sockets, connections, width, height)
+
+    try:
+        wfc.find_superposition()
+
+    except KeyboardInterrupt:
+        print("Interrupted")
+        return
 
     values = tuple(wfc.superposition_values)
 
     result = create_image(values, sprites, width, height, tile_size)
     result.save("result.png")
 
+    print("Saved as result.png.")
+
 
 def create_superposition_gif(width, height):
     with open("data.json") as file:
         json_data = json.load(file)
 
+    connections = json_data["connections"]
     base_sprites, tile_size = load_sprites(json_data)
+
+    print(f"Loaded {len(base_sprites)} sprites.")
+
     sockets, sprites = create_rotations(json_data, base_sprites)
-    wfc = wave_collapse.WaveFunctionCollapse(sockets, width, height)
+
+    print(f"Created {len(sockets)} tiles.")
+
+    wfc = wave_collapse.WaveFunctionCollapse(sockets, connections, width, height)
 
     while True:
         frames = []
@@ -96,6 +117,10 @@ def create_superposition_gif(width, height):
 
             except (NotImplementedError, RecursionError):
                 break
+
+            except KeyboardInterrupt:
+                print("Interrupted")
+                return
 
 
 def create_image(values, sprites, width, height, tile_size):
