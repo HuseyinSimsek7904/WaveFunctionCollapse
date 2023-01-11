@@ -1,0 +1,54 @@
+{
+  "dimensions": 2,
+  "combined_tileset": false,
+  "tiles": [
+    {
+      "sprite": 0,
+      "sockets": [
+        "pipe",
+        "pipe",
+        "none",
+        "none"
+      ],
+      "rotations": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "sprite": 1,
+      "sockets": [
+        "none",
+        "none",
+        "none",
+        "none"
+      ],
+      "rotations": [
+        0
+      ]
+    },
+    {
+      "sprite": 2,
+      "sockets": [
+        "pipe",
+        "none",
+        "pipe",
+        "none"
+      ],
+      "rotations": [
+        0,
+        1
+      ]
+    }
+  ],
+  "connections": {
+    "none": [
+      "none"
+    ],
+    "pipe": [
+      "pipe"
+    ]
+  }
+}
